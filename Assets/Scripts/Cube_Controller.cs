@@ -20,7 +20,7 @@ public class Cube_Controller : MonoBehaviour
     {
         if (Input.GetMouseButton(0) && !_isHolding && _isGround)
         {
-            charge += 0.1f;
+            charge += 0.01f;
         }
 
         if (Input.GetMouseButtonUp(0))
@@ -32,6 +32,8 @@ public class Cube_Controller : MonoBehaviour
         {
             charge = 0f;
         }
+
+        charge = Mathf.Clamp(charge, 0, 5f);
     }
 
     private void FixedUpdate()
@@ -41,6 +43,14 @@ public class Cube_Controller : MonoBehaviour
             rb.AddForce(direction* charge * jumpForce);
             _isHolding = false;
             _isGround = false;
+        }
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.CompareTag("Ground"))
+        {
+            _isGround = true;
         }
     }
 }
